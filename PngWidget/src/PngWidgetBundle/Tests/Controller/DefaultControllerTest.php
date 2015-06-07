@@ -9,7 +9,7 @@ use PngWidgetBundle\Entity\User;
 
 class DefaultControllerTest extends WebTestCase
 {
-    //http://127.0.0.1:8000/web/app_dev.php/2d87b0018eaff7a8cf7cf63d5c067e44/w100-h100-bC74343-tECF019
+    //http://127.0.0.1:8000/web/app_dev.php/09a50fd6acdf3983da36988c804ae041/w100-h100-bC74343-tECF019
     
     /**
      * @var EntityManager
