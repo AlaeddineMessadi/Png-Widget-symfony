@@ -38,6 +38,12 @@ class Color
 		$this->blue = $blue;
 	}
     
+    /*
+     * 
+     * Check the Hexa Color value and reformat 
+     * @param string
+     * @return array
+     */
     private function convertFromHexa($hexa){
         $length = strlen($hexa);
         if($length == 3){
