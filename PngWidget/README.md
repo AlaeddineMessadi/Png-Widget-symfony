@@ -22,7 +22,7 @@ Run Server:
 
 Example :
 
-    •http://127.0.0.1:8000/web/app_dev.php/2d87b0018eaff7a8cf7cf63d5c067e44/w100-h100-bC74343-tECF019
+    •http://127.0.0.1:8000/web/app_dev.php/1d87b0018eaff7a8cf7cf63d5c067e44/w100-h100-bC74343-tECF019
 
 To add a local host name please create :
 
