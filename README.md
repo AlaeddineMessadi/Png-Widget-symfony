@@ -1,9 +1,11 @@
 # PngWidget
 
 Build a small application which is capable of rendering png widgets (images) for users. The users should be stored in the database and have at least the following information:
+
 	-	some hash that can be used as a public identifier
 	-	some information about the status (could be locked or inactive for example)
 The app should have one public endpoint (per user) that can return image data and respects the semantics of http status codes. It should only return image data for active users (uses the state information mentioned above). The widget itself should have 4 dynamic attributes:
+
 	-	width (number in px between 100 and 500)
 	-	height (number in px between 100 and 500)
 	-	background-color (hex value, e.g. 000000 means black)
