@@ -1,3 +1,28 @@
-png_widget_homepage:
+png_widget_hello:
     path:     /hello/{name}
     defaults: { _controller: PngWidgetBundle:Default:index }
+
+user:
+    pattern:  /user/
+    defaults: { _controller: PngWidgetBundle:User:index }
+
+
+user_new:
+    pattern:  /user/add/
+    defaults: { _controller: PngWidgetBundle:User:new }
+
+user_show:
+    pattern:  /user/{id}
+    defaults: { _controller: PngWidgetBundle:User:show }
+    requirements:
+        id:  \d+
+        
+user_create:
+    pattern:  /user/create
+    defaults: { _controller: PngWidgetBundle:User:create }
+
+user_delete:
+    pattern:  /user/{id}/delete/
+    defaults: { _controller: FooNewsBundle:Default:delete }
+    requirements:
+        id:  \d+
