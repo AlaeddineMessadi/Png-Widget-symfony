@@ -7,7 +7,7 @@ use PngWidgetBundle\Classes\Image;
 
 class DefaultController extends Controller
 {
-    public function indexAction($name)
+    public function indexAction($hash,$width,$height,$background,$textColor)
     {
        $em = $this->getDoctrine()->getManager();
        $image = new Image($width,$height,$background,$textColor);
