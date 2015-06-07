@@ -8,6 +8,12 @@ class Color
     private $green;
     private $blue;
     
+    function __construct($hexa){
+        $colors = $this->convertFromHexa($hexa);
+        $this->red = $colors['red'];
+        $this->green = $colors['green'];
+        $this->blue = $colors['blue'];
+    }
     public function getRed(){
 		return $this->red;
 	}
@@ -32,5 +38,18 @@ class Color
 		$this->blue = $blue;
 	}
     
+    private function convertFromHexa($hexa){
+        $length = strlen($hexa);
+        if($length == 3){
+            $array['red'] = substr($hexa,0,1).substr($hexa,0,1);
+            $array['green'] = substr($hexa,1,1).substr($hexa,1,1);
+            $array['blue'] = substr($hexa,2,1).substr($hexa,2,1);
+        }else{
+            $array['red'] = substr($hexa,0,2);
+            $array['green'] = substr($hexa,2,2);
+            $array['blue'] = substr($hexa,4,2);
+        }
+        return $array;
+    }
 }
 
