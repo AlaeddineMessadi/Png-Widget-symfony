@@ -16,7 +16,11 @@ user_show:
     defaults: { _controller: PngWidgetBundle:User:show }
     requirements:
         id:  \d+
-        
+user_edit:
+    pattern:  /user/{id}
+    defaults: { _controller: PngWidgetBundle:User:edit }
+    requirements:
+        id:  \d+
 user_create:
     pattern:  /user/create
     defaults: { _controller: PngWidgetBundle:User:create }

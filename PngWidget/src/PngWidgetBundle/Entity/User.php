@@ -54,7 +54,7 @@ class User
      */
     public function setHash($hash)
     {
-        $this->hash = $hash;
+        $this->hash = md5($hash);
 
         return $this;
     }
