@@ -26,11 +26,11 @@ Example :
 
 To add a local host name please create :
 
-	•	127.0.0.1 pngwidget.de
+    •	127.0.0.1:8000 pngwidget.de
 
 Then enter this configurations to These I added to apache httpd-vhosts.conf :
 
-	•	<VirtualHost *:80>
+    •	<VirtualHost *:80>
     •   ServerName pngwidget.de
     •   DocumentRoot "c:/PNWGWIDGET_PROJECT"
     •   <Directory "C:/PNWGWIDGET_PROJECT">
