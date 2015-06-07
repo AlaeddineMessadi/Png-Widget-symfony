@@ -56,6 +56,7 @@ class UserController extends Controller
                $em->flush();
                return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
             }else{
+                // redirect to the index
                return $this->redirect($this->generateUrl('user', array('message' => "User with same Hash Exists")));
             }
         }
