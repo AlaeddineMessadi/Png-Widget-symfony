@@ -16,25 +16,40 @@ class DefaultController extends Controller
        $image = new Image($width,$height,$background,$textColor);
        // other way to check and validate parameters instead using regix requirements in route
        $verify =  $image->checkParams();
-       if( !is_bool($verify) ) return new Response($verify);
-
+       if( !is_bool($verify) ) {
+            $response = new Response();
+            $response->setContent("<html><head><title>HTTP BAD REQUEST</title><body><h1>$verify</h1></body></html>");
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+            $response->headers->set('Content-Type', 'text/html');
+            // prints the HTTP headers followed by the content
+            $response->send(); die;
+       }
        // get user by hash
        $user = $em->getRepository('PngWidgetBundle:User')->findOneBy(array('hash'=>$hash));
        if ($user){
             // Check user status 
-            if(!$user->getStatus()) return New Response ("Your account is Disabled");
+            if(!$user->getStatus()) {
+                $response = new Response();
+                $response->setContent("<html><head><title>FORBIDDEN</title><body><h1>Your Account is Disabled</h1></body></html>");
+                $response->setStatusCode(Response::HTTP_FORBIDDEN);
+                $response->headers->set('Content-Type', 'text/html');
+                // prints the HTTP headers followed by the content
+                $response->send(); die;
+            }
             
             $response = new Response();
             // Create the image
             $im = $this->createImage($image);
             // Set headers
+            $response->setStatusCode(Response::HTTP_OK);
             $response->headers->set('Cache-Control', 'private');
             $response->headers->set('Content-type', 'image/png');
             $response->headers->set('Content-Disposition', 'attachment; filename="' . basename(''.$im) . '";');
 
             // Send headers before outputting anything
             $response->sendHeaders();
-            return $response;
+            $response->send(); die;
+            //return $response;
         }
         return new Response("User Not Found");
     }
@@ -57,4 +72,13 @@ class DefaultController extends Controller
         return $im;
     }
     
+    private function response($message){
+        $response = new Response();
+        $response->setContent("<html><body><h1>$message</h1></body></html>");
+        $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+        $response->headers->set('Content-Type', 'text/html');
+        // prints the HTTP headers followed by the content
+        $response->send();
+        return $response;
+    }
 }

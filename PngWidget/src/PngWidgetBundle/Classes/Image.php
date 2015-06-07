@@ -109,7 +109,7 @@ class Image
 	}
     
     // Check $width,$height,$background,$textColor
-    public function checkParams() {
+    function checkParams() {
         if($this->width <100 && $this->width>500)
             return "The Width must be between 100 and 500";
         if($this->height <100 && $this->height>500)
