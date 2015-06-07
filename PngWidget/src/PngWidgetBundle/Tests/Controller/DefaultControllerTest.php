@@ -15,8 +15,6 @@ class DefaultControllerTest extends WebTestCase
      * @var EntityManager
      */
     private $_em;
-    private $u1;
-    private $u2;
 
     protected function setUp()
     {
