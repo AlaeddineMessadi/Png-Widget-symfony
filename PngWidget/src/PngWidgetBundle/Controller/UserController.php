@@ -50,10 +50,14 @@ class UserController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
+            // check if user with hash exists
+            if(!$em->getRepository('PngWidgetBundle:User')->findOneBy(array('hash'=>$entity->getHash()))){
+               $em->persist($entity);
+               $em->flush();
+               return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
+            }else{
+               return $this->redirect($this->generateUrl('user', array('message' => "User with same Hash Exists")));
+            }
         }
 
         return array(

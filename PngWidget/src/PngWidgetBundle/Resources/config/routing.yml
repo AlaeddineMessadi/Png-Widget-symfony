@@ -27,6 +27,6 @@ user_create:
 
 user_delete:
     pattern:  /user/{id}/delete/
-    defaults: { _controller: FooNewsBundle:Default:delete }
+    defaults: { _controller: PngWidgetBundle:User:delete }
     requirements:
         id:  \d+
