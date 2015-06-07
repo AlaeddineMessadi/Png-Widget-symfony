@@ -3,7 +3,10 @@
 namespace PngWidgetBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+//use Symfony\Component\BrowserKit\Response;
 use PngWidgetBundle\Classes\Image;
+use PngWidgetBundle\Classes\Color;
 
 class DefaultController extends Controller
 {
