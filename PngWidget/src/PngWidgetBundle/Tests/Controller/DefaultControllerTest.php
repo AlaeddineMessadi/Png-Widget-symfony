@@ -33,12 +33,14 @@ class DefaultControllerTest extends WebTestCase
         $u1 = new User();
         $u1->setHash("Hash1");
         $u1->setStatus(true);
-        $this->_em->persist($u1);
-        $this->_em->flush();
+        if(!$this->_em->getRepository('PngWidgetBundle:User')->findOneBy(array('hash'=>$u1->getHash()))){
+            $this->_em->persist($u1);
+            $this->_em->flush();
+        }
         
         $client = static::createClient();
         $entity = $this->_em->getRepository('PngWidgetBundle:User')->findOneBy(array('hash'=>  $u1->getHash()));
-       // var_dump($entity);
+        // var_dump($entity);
         // $entity Existing User with enabled status 
         $crawler = $client->request('GET', '/'.$entity->getHash().'/w100-h100-bC74343-tECF019');
 //        var_dump('/'.$entity->getHash().'/w100-h100-bC74343-tECF019');
@@ -57,8 +59,10 @@ class DefaultControllerTest extends WebTestCase
         $u2 = new User();
         $u2->setHash("Hash2");
         $u2->setStatus(false);
-        $this->_em->persist($u2);
-        $this->_em->flush();
+       if(!$this->_em->getRepository('PngWidgetBundle:User')->findOneBy(array('hash'=>$u2->getHash()))){
+            $this->_em->persist($u2);
+            $this->_em->flush();
+        }
         
         $client = static::createClient();
         //  Existing User with disabled status
@@ -83,8 +87,6 @@ class DefaultControllerTest extends WebTestCase
         $u1 = new User();
         $u1->setHash("Hash1");
         $u1->setStatus(true);
-//        $this->_em->persist($u1);
-//        $this->_em->flush();
         
         // try width 1000 which is > than 500
         $client = static::createClient();
@@ -102,9 +104,7 @@ class DefaultControllerTest extends WebTestCase
         $u1 = new User();
         $u1->setHash("Hash1");
         $u1->setStatus(true);
-//        $this->_em->persist($u1);
-//        $this->_em->flush();
-//        
+        
         // try height 1000 which is > than 500
         $client = static::createClient();
         $entity = $this->_em->getRepository('PngWidgetBundle:User')->findOneBy(array('hash'=>  $u1->getHash()));
@@ -121,8 +121,6 @@ class DefaultControllerTest extends WebTestCase
         $u1 = new User();
         $u1->setHash("Hash1");
         $u1->setStatus(true);
-//        $this->_em->persist($u1);
-//        $this->_em->flush();
         
         // try height 1000 which is > than 500
         $client = static::createClient();
@@ -140,8 +138,6 @@ class DefaultControllerTest extends WebTestCase
         $u1 = new User();
         $u1->setHash("Hash1");
         $u1->setStatus(true);
-//        $this->_em->persist($u1);
-//        $this->_em->flush();
         
         // try height 1000 which is > than 500
         $client = static::createClient();
@@ -176,6 +172,6 @@ class DefaultControllerTest extends WebTestCase
      */
     public function tearDown()
     {
-       // $this->_em->rollback();
+//        $this->_em->rollback();
     }
 }
