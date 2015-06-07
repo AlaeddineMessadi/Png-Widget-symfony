@@ -5,34 +5,65 @@ namespace PngWidgetBundle\Tests\Controller;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use PngWidgetBundle\Classes\Color;
 use PngWidgetBundle\Classes\Image;
+use PngWidgetBundle\Entity\User;
 
 class DefaultControllerTest extends WebTestCase
 {
     //http://127.0.0.1:8000/web/app_dev.php/2d87b0018eaff7a8cf7cf63d5c067e44/w100-h100-bC74343-tECF019
-//        $client = static::createClient();
-//
-//        $crawler = $client->request('GET', '/hello/Fabien');
-//
-//        $this->assertTrue($crawler->filter('html:contains("Hello Fabien")')->count() > 0);
+    
+    /**
+     * @var EntityManager
+     */
+    private $_em;
+    private $u1;
+    private $u2;
+
+    protected function setUp()
+    {
+        $kernel = static::createKernel();
+        $kernel->boot();
+        $this->_em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+//        $this->_em->beginTransaction();
+    }
+
         
     public function testRenderPng()
     {
+        // Inisialise two users and insert them to the database
+        $u1 = new User();
+        $u1->setHash("Hash1");
+        $u1->setStatus(true);
+        $this->_em->persist($u1);
+        $this->_em->flush();
+        
         $client = static::createClient();
-        // 1d87b0018eaff7a8cf7cf63d5c067e44 Existing User with enabled status 
-        $crawler = $client->request('GET', '/1d87b0018eaff7a8cf7cf63d5c067e44/w100-h100-bC74343-tECF019');
+        $entity = $this->_em->getRepository('PngWidgetBundle:User')->findOneBy(array('hash'=>  $u1->getHash()));
+       // var_dump($entity);
+        // $entity Existing User with enabled status 
+        $crawler = $client->request('GET', '/'.$entity->getHash().'/w100-h100-bC74343-tECF019');
+//        var_dump('/'.$entity->getHash().'/w100-h100-bC74343-tECF019');
+//        var_dump($client->getResponse()->getContent());
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertTrue($client->getResponse()->headers->contains(
                                                                     'Content-Type',
                                                                     'image/png'
                                                                     )
                          );
+        
     }
     
     public function testUserDisabled()
     {
+        $u2 = new User();
+        $u2->setHash("Hash2");
+        $u2->setStatus(false);
+        $this->_em->persist($u2);
+        $this->_em->flush();
+        
         $client = static::createClient();
-        // 9193ce3b31332b03f7d8af056c692b84 Existing User with disabled status 
-        $crawler = $client->request('GET', '/9193ce3b31332b03f7d8af056c692b84/w100-h100-bC74343-tECF019');
+        //  Existing User with disabled status
+        $entity = $this->_em->getRepository('PngWidgetBundle:User')->findOneBy(array('hash'=>  $u2->getHash()));
+        $crawler = $client->request('GET', '/'.$entity->getHash().'/w100-h100-bC74343-tECF019');
         $this->assertEquals(403,$client->getResponse()->getStatusCode());  
         $this->assertTrue($client->getResponse()->isForbidden());
     }
@@ -40,17 +71,25 @@ class DefaultControllerTest extends WebTestCase
     public function testUserNotFound()
     {
         $client = static::createClient();
-        // 2d87b0018eaff7a8cf7cf63d5c067e44 user not found
-        $crawler = $client->request('GET', '/2d87b0018eaff7a8cf7cf63d5c067e44/w100-h100-bC74343-tECF019');
+        //  user not found
+        
+        $crawler = $client->request('GET', '/'.  md5("no one").'/w100-h100-bC74343-tECF019');
         $this->assertEquals(404,$client->getResponse()->getStatusCode());
         $this->assertTrue($client->getResponse()->isNotFound());
     }
     
     public function testWidthNotValid()
     {
+        $u1 = new User();
+        $u1->setHash("Hash1");
+        $u1->setStatus(true);
+//        $this->_em->persist($u1);
+//        $this->_em->flush();
+        
         // try width 1000 which is > than 500
         $client = static::createClient();
-        $crawler = $client->request('GET', '/1d87b0018eaff7a8cf7cf63d5c067e44/w1000-h100-bC74343-tECF019');
+        $entity = $this->_em->getRepository('PngWidgetBundle:User')->findOneBy(array('hash'=>  $u1->getHash()));
+        $crawler = $client->request('GET', '/'.$entity->getHash().'/w1000-h100-bC74343-tECF019');
         $this->assertEquals(400,$client->getResponse()->getStatusCode());
         $this->assertGreaterThan(
             0,
@@ -60,9 +99,16 @@ class DefaultControllerTest extends WebTestCase
     
     public function testHeightNotValid()
     {
+        $u1 = new User();
+        $u1->setHash("Hash1");
+        $u1->setStatus(true);
+//        $this->_em->persist($u1);
+//        $this->_em->flush();
+//        
         // try height 1000 which is > than 500
         $client = static::createClient();
-        $crawler = $client->request('GET', '/1d87b0018eaff7a8cf7cf63d5c067e44/w100-h1000-bC74343-tECF019');
+        $entity = $this->_em->getRepository('PngWidgetBundle:User')->findOneBy(array('hash'=>  $u1->getHash()));
+        $crawler = $client->request('GET', '/'.$entity->getHash().'/w100-h1000-bC74343-tECF019');
         $this->assertEquals(400,$client->getResponse()->getStatusCode());
         $this->assertGreaterThan(
             0,
@@ -72,9 +118,16 @@ class DefaultControllerTest extends WebTestCase
     
     public function testHexBackgroundColor()
     {
+        $u1 = new User();
+        $u1->setHash("Hash1");
+        $u1->setStatus(true);
+//        $this->_em->persist($u1);
+//        $this->_em->flush();
+        
         // try height 1000 which is > than 500
         $client = static::createClient();
-        $crawler = $client->request('GET', '/1d87b0018eaff7a8cf7cf63d5c067e44/w100-h100-bRESDC-tECF019');
+        $entity = $this->_em->getRepository('PngWidgetBundle:User')->findOneBy(array('hash'=>  $u1->getHash()));
+        $crawler = $client->request('GET', '/'.$entity->getHash().'/w100-h100-bRESDC-tECF019');
         $this->assertEquals(400,$client->getResponse()->getStatusCode());
         $this->assertGreaterThan(
             0,
@@ -84,9 +137,16 @@ class DefaultControllerTest extends WebTestCase
     
     public function testHexTextColor()
     {
+        $u1 = new User();
+        $u1->setHash("Hash1");
+        $u1->setStatus(true);
+//        $this->_em->persist($u1);
+//        $this->_em->flush();
+        
         // try height 1000 which is > than 500
         $client = static::createClient();
-        $crawler = $client->request('GET', '/1d87b0018eaff7a8cf7cf63d5c067e44/w100-h100-bC74343-tbest');
+        $entity = $this->_em->getRepository('PngWidgetBundle:User')->findOneBy(array('hash'=>  $u1->getHash()));
+        $crawler = $client->request('GET', '/'.$entity->getHash().'/w100-h100-bC74343-tbest');
         $this->assertEquals(400,$client->getResponse()->getStatusCode());
         $this->assertGreaterThan(
             0,
@@ -111,4 +171,11 @@ class DefaultControllerTest extends WebTestCase
     }
     
     
+    /**
+     * Rollback changes.
+     */
+    public function tearDown()
+    {
+       // $this->_em->rollback();
+    }
 }

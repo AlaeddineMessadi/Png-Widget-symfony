@@ -33,7 +33,7 @@ class UserControllerTest extends WebTestCase
         
         
         $crawler = $client->click($crawler->selectLink('edit')->link());
-        var_dump($client->getResponse()->getContent());
+        // var_dump($client->getResponse()->getContent()); //debug
         // Delete the entity
         $client->submit($crawler->selectButton('Delete')->form());
         $crawler = $client->followRedirect();
