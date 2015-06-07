@@ -6,7 +6,7 @@ A Symfony project created on June 7, 2015, 12:26 pm.
 
 # Install
 
-Create the Database and the table or import `db.sql` :
+Create the Database and the table or import `pngwidgetrender.sql` :
 
     • $php app/console doctrine:mapping:
     • $php app/console doctrine:schema:update
@@ -22,7 +22,11 @@ Run Server:
 
 Example :
 
-    •http://127.0.0.1:8000/web/app_dev.php/1d87b0018eaff7a8cf7cf63d5c067e44/w100-h100-bC74343-tECF019
+    •http://127.0.0.1:8000/web/app_dev.php/09a50fd6acdf3983da36988c804ae041/w100-h100-bC74343-tECF019
+    
+## Tests
+
+    • phpunit -c app/
 
 To add a local host name please create :
 
