@@ -14,6 +14,10 @@ class DefaultController extends Controller
     {
        $em = $this->getDoctrine()->getManager();
        $image = new Image($width,$height,$background,$textColor);
+       // other way to check and validate parameters instead using regix requirements in route
+       $verify =  $image->checkParams();
+       if( !is_bool($verify) ) return new Response($verify);
+
        // get user by hash
        $user = $em->getRepository('PngWidgetBundle:User')->findOneBy(array('hash'=>$hash));
        if ($user){
@@ -52,4 +56,5 @@ class DefaultController extends Controller
         ImagePNG ($im);
         return $im;
     }
+    
 }
