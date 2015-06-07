@@ -3,10 +3,10 @@ png_homepage:
     defaults: 
         _controller: PngWidgetBundle:Default:index 
     requirements:
-        width : '^[0-9]{3}$'
-        height : '^[0-9]{3}$'
-#       background : '^[a-zA-Z0-9]{6,}$'
-#       textcolor : '^[a-zA-Z0-9]{6,}$'
+#       width : '^[0-9]{3}$'
+#       height : '^[0-9]{3}$'
+#       background : '/([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?\b/'
+#       textcolor : '/([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?\b/'
 
 user:
     pattern:  /user/

@@ -14,44 +14,48 @@ class DefaultController extends Controller
     {
        $em = $this->getDoctrine()->getManager();
        $image = new Image($width,$height,$background,$textColor);
+       $response = new Response();
        // other way to check and validate parameters instead using regix requirements in route
        $verify =  $image->checkParams();
        if( !is_bool($verify) ) {
-            $response = new Response();
+            
             $response->setContent("<html><head><title>HTTP BAD REQUEST</title><body><h1>$verify</h1></body></html>");
             $response->setStatusCode(Response::HTTP_BAD_REQUEST);
             $response->headers->set('Content-Type', 'text/html');
             // prints the HTTP headers followed by the content
-            $response->send(); die;
+             return $response;
        }
        // get user by hash
        $user = $em->getRepository('PngWidgetBundle:User')->findOneBy(array('hash'=>$hash));
-       if ($user){
+       if (!is_null ($user)){
             // Check user status 
             if(!$user->getStatus()) {
-                $response = new Response();
                 $response->setContent("<html><head><title>FORBIDDEN</title><body><h1>Your Account is Disabled</h1></body></html>");
                 $response->setStatusCode(Response::HTTP_FORBIDDEN);
                 $response->headers->set('Content-Type', 'text/html');
                 // prints the HTTP headers followed by the content
-                $response->send(); die;
+                return $response;
             }
-            
-            $response = new Response();
-            // Create the image
-            $im = $this->createImage($image);
-            // Set headers
-            $response->setStatusCode(Response::HTTP_OK);
-            $response->headers->set('Cache-Control', 'private');
-            $response->headers->set('Content-type', 'image/png');
-            $response->headers->set('Content-Disposition', 'attachment; filename="' . basename(''.$im) . '";');
+                // Create the image
+                $im = $this->createImage($image);
+                // Set headers
+                $response->setStatusCode(Response::HTTP_OK);
+                $response->headers->set('Cache-Control', 'private');
+                $response->headers->set('Content-type', 'image/png');
+                $response->headers->set('Content-Disposition', 'attachment; filename="' . basename(''.$im) . '";');
 
-            // Send headers before outputting anything
-            $response->sendHeaders();
-            $response->send(); die;
-            //return $response;
-        }
-        return new Response("User Not Found");
+                // Send headers before outputting anything
+                $response->sendHeaders();
+                return $response;
+                //return $response;
+       }
+       else{
+            $response->setContent("<html><head><title>FORBIDDEN</title><body><h1>User not found</h1></body></html>");
+            $response->setStatusCode(Response::HTTP_NOT_FOUND);
+            $response->headers->set('Content-Type', 'text/html');
+            // prints the HTTP headers followed by the content
+            return $response;    
+       }
     }
     
     
@@ -67,7 +71,7 @@ class DefaultController extends Controller
         // Get color by red green blue from Hexa and assign text color to the image
         $text_color = ImageColorAllocate ($im,"0x".$textColor->getRed(), "0x".$textColor->getGreen(), "0x".$textColor->getBlue());
         // put random text to the image and align it in the center based on width lenght text lenght plus the% and font size 
-        ImageString ($im, $image->getWidth()/100, ($image->getWidth()/2)-(strlen($image->getText())+10), ($image->getHeight()/2)-3, $image->getText()."%", $text_color);
+        ImageString ($im, $image->getWidth()/100, ($image->getWidth()/2)-(strlen($image->getText())+9), ($image->getHeight()/2)-3, $image->getText()."%", $text_color);
         ImagePNG ($im);
         return $im;
     }
