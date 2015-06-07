@@ -1,0 +1,3 @@
+png_widget_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: PngWidgetBundle:Default:index }
