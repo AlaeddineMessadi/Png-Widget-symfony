@@ -1,6 +1,6 @@
 <?php
 
-namespace PngBundle\Classes;
+namespace PngWidgetBundle\Classes;
 
 class Image
 {
