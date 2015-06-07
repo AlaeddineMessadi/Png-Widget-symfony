@@ -22,11 +22,17 @@ user_show:
     defaults: { _controller: PngWidgetBundle:User:show }
     requirements:
         id:  \d+
+        
 user_edit:
-    pattern:  /user/{id}
+    pattern:  /user/{id}/edit
     defaults: { _controller: PngWidgetBundle:User:edit }
     requirements:
         id:  \d+
+
+user_update:
+    pattern:  /user/{id}/update
+    defaults: { _controller: PngWidgetBundle:User:update }
+
 user_create:
     pattern:  /user/create
     defaults: { _controller: PngWidgetBundle:User:create }
