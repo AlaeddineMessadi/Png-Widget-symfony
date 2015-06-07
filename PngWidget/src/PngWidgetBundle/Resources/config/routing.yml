@@ -1,6 +1,12 @@
-png_widget_hello:
-    path:     /hello/{name}
-    defaults: { _controller: PngWidgetBundle:Default:index }
+png_homepage:
+    path:     /{hash}/w{width}-h{height}-b{background}-t{textColor}
+    defaults: 
+        _controller: PngWidgetBundle:Default:index 
+    requirements:
+        width : '^[0-9]{3}$'
+        height : '^[0-9]{3}$'
+#       background : '^[a-zA-Z0-9]{6,}$'
+#       textcolor : '^[a-zA-Z0-9]{6,}$'
 
 user:
     pattern:  /user/
