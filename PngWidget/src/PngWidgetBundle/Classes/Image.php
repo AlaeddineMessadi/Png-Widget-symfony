@@ -109,14 +109,14 @@ class Image
 	}
     
     // Check $width,$height,$background,$textColor
-    function checkParams() {
+    public function checkParams() {
         if($this->width <100 && $this->width>500)
             return "The Width must be between 100 and 500";
         if($this->height <100 && $this->height>500)
             return "The Height must be between 100 and 500";
-        if(strlen($this->backgroundColor)!=3 && strlen($this->backgroundColor)!= 6)
+        if(!preg_match('/([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?\b/', $this->backgroundColor))
             return "Please check your backgroundcolor Hexa Code";
-        if(strlen($this->textColor)!=3 && strlen($this->textColor)!= 6)
+        if(!preg_match('/([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?\b/', $this->textColor))
             return "Please check your TextColor Hexa Code";
         return true;
     }
