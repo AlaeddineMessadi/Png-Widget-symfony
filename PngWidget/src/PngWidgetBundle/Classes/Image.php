@@ -11,7 +11,7 @@ class Image
 	private $text;
 
     
-    function __construct($width,$height,$backgroundColor,$textColor) {
+    public function __construct($width,$height,Color $backgroundColor,Color $textColor) {
         $this->width = $width;
         $this->height = $height;
         $this->backgroundColor = $backgroundColor;
@@ -114,9 +114,9 @@ class Image
             return "The Width must be between 100 and 500";
         if($this->height <100 || $this->height>500)
             return "The Height must be between 100 and 500";
-        if(!preg_match('/([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?\b/', $this->backgroundColor))
+        if(!preg_match('/([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?\b/', $this->backgroundColor->getHexa()))
             return "Please check your backgroundcolor Hexa Code";
-        if(!preg_match('/([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?\b/', $this->textColor))
+        if(!preg_match('/([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?\b/', $this->textColor->getHexa()))
             return "Please check your TextColor Hexa Code";
         return true;
     }

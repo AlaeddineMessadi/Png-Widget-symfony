@@ -7,8 +7,10 @@ class Color
     private $red;
     private $green;
     private $blue;
+    private $hexacode;
     
-    function __construct($hexa){
+    public function __construct($hexa){
+        $this->hexacode = $hexa;
         $colors = $this->convertFromHexa($hexa);
         $this->red = $colors['red'];
         $this->green = $colors['green'];
@@ -38,6 +40,14 @@ class Color
 		$this->blue = $blue;
 	}
     
+    public function getHexa(){
+		return $this->hexacode;
+	}
+
+	public function setHexa($hexa){
+		$this->hexacode = $hexa;
+	}
+    
     /*
      * 
      * Check the Hexa Color value and reformat 
@@ -45,6 +55,7 @@ class Color
      * @return array
      */
     private function convertFromHexa($hexa){
+        //var_dump($this->hexaCode);die;
         $length = strlen($hexa);
         if($length == 3){
             $array['red'] = substr($hexa,0,1).substr($hexa,0,1);
