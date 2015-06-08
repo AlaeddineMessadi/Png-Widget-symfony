@@ -28,7 +28,7 @@ Example :
 
     • phpunit -c app/
 
-To add a local host name please create :
+To add a local host name please add this line in your host file :
 
     •	127.0.0.1:8000 pngwidget.de
 
